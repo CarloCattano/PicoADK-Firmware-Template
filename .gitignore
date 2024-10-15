@@ -3,3 +3,6 @@ build/*
 *.bin
 *.elf
 .vscode
+.cache
+.clangd
+

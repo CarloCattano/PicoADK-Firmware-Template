@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 3.13)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 14)
 
-set(PICO_EXTRAS_PATH "../lib/pico-extras")
+set(PICO_EXTRAS_PATH "${CMAKE_CURRENT_SOURCE_DIR}/lib/pico-extras")
 set(PICO_BOARD datanoisetv_rp2350_dsp)
 set(PICO_PLATFORM "rp2350-arm-s")
 set(FREERTOS_KERNEL_PATH "${CMAKE_CURRENT_SOURCE_DIR}/lib/FreeRTOS-Kernel")
@@ -32,9 +32,12 @@ pico_sdk_init()
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_BINARY_DIR} ".")
 
+
 add_subdirectory(lib/audio)
 add_subdirectory(lib/oled)
-
+add_subdirectory(lib/libpd)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/lib/libpd/libpd_wrapper)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/lib/libpd/pure-data)
 # Set the real flag based on the PICO_PLATFORM variable
 if (DEFINED PICO_PLATFORM AND PICO_PLATFORM STREQUAL "rp2350-arm-s")
     set(REAL_TYPE_FLAG "float")

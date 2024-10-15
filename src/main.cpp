@@ -12,6 +12,10 @@
 #include "audio_subsystem.h"
 #include "picoadk_hw.h"
 
+
+// TODO libpd m_pd.h not found
+// #include "z_libpd.h"
+
 #include "FreeRTOS.h"
 #include <task.h>
 #include <queue.h>
@@ -91,11 +95,16 @@ extern "C" {
     /**
      * Main entry point.
      */
+
+
     int main(void)
     {
         // Initialize hardware
         picoadk_init();
-
+        
+        // Initialize libpd
+        // libpd_init();
+        
         // Initialize DSP engine (if needed)
 
         // Initialize the audio subsystem
@@ -142,6 +151,43 @@ extern "C" {
         buffer->sample_count = buffer->max_sample_count;
         give_audio_buffer(audio_pool, buffer);
     }
+
+
+
+/*
+  test libpd by running a patch in a loop
+*/
+// #include "z_libpd.h"
+//
+//
+// int main(int argc, char **argv) {
+//
+//   libpd_set_noteonhook(pdnoteon);
+//   libpd_init();
+//   libpd_init_audio(1, 2, srate);
+//   float inbuf[64], outbuf[128];  // one input channel, two output channels
+//                                  // block size 64, one tick per buffer
+//
+//   // compute audio    [; pd dsp 1(
+//   libpd_start_message(1); // one entry in list
+//   libpd_add_float(1.0f);
+//   libpd_finish_message("pd", "dsp");
+//
+//   // open patch       [; pd open file folder(
+  // if (!libpd_openfile("test.pd", NULL))
+//     return -1;
+//
+//   // now run pd for ten seconds (logical time)
+//   int i;
+//   for (i = 0; i < 10 * srate / 64; i++) {
+//     // fill inbuf here
+//     libpd_process_float(1, inbuf, outbuf);
+//     // use outbuf here
+//   }
+//   for (i = 0; i < 10; i++)
+//     printf("%g\n", outbuf[i]);
+//   return 0;
+// }
 
 #ifdef __cplusplus
 }
